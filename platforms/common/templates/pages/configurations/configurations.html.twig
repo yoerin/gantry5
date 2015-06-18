@@ -18,8 +18,8 @@
     <div id="configurations">
         <ul class="g-grid">
             {# TODO: Need to inject the Base Outline at the top of the list #}
-            {% for name, title in gantry.configurations.user %}
-                {%  set preset = gantry.configurations.layoutPreset(name) %}
+            {% for name, title in gantry.outlines.user %}
+                {%  set preset = gantry.outlines.layoutPreset(name) %}
                 <li class="card g-block size-1-4">
                     <div class="page">
                         <h4 class="g-tooltip" data-title="{{ title|e }}">
@@ -37,7 +37,7 @@
                                 <button data-title="Duplicate" data-g-config="duplicate" data-g-config-href="{{ gantry.route('configurations', name, 'duplicate')|e }}" data-g-config-method="POST" class="button button-secondary g-tooltip">
                                     <i class="fa fa-fw fa-copy"></i>
                                 </button>
-                                {% if name != 'default' and gantry.configurations.canDelete(name) %}
+                                {% if name != 'default' and gantry.outlines.canDelete(name) %}
                                 <button data-title="Delete" data-g-config="delete" data-g-config-href="{{ gantry.route('configurations', name)|e }}" data-g-config-method="DELETE" class="button red g-tooltip">
                                     <i class="fa fa-fw fa-trash-o"></i>
                                 </button>
@@ -59,8 +59,8 @@
 
         <h2>System Outlines</h2>
         <ul class="g-grid">
-            {% for name, title in gantry.configurations.system %}
-                {%  set preset = gantry.configurations.layoutPreset(name) %}
+            {% for name, title in gantry.outlines.system %}
+                {%  set preset = gantry.outlines.layoutPreset(name) %}
                 <li class="card g-block size-1-4">
                     <div class="page">
                         <h4>{{ title }} <span class="float-right font-small">(id: {{ name }})</span></h4>

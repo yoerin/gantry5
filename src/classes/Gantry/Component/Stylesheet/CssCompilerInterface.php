@@ -28,10 +28,10 @@ interface CssCompilerInterface
     public function setTarget($target = null);
 
     /**
-     * @param string $configuration
+     * @param string $outline
      * @return $this
      */
-    public function setConfiguration($configuration = null);
+    public function setConfiguration($outline = null);
 
     /**
      * @param array $paths

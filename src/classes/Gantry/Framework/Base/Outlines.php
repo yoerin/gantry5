@@ -15,12 +15,12 @@
 namespace Gantry\Framework\Base;
 
 use Gantry\Component\Config\ConfigFileFinder;
-use Gantry\Component\Configuration\AbstractConfigurationCollection;
 use Gantry\Component\Layout\Layout;
+use Gantry\Component\Outline\AbstractOutlineCollection;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceIterator;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
-class Configurations extends AbstractConfigurationCollection
+class Outlines extends AbstractOutlineCollection
 {
     /**
      * @param string $path
@@ -49,7 +49,7 @@ class Configurations extends AbstractConfigurationCollection
         }
 
         if (!isset($files['default'])) {
-            throw new \RuntimeException('Fatal error: Theme does not have default layout');
+            throw new \RuntimeException('Fatal error: Theme does not have default outline');
         }
 
         unset($files['default']);
@@ -149,16 +149,16 @@ class Configurations extends AbstractConfigurationCollection
     }
 
     /**
-     * @param array $configurations
+     * @param array $outlines
      * @return array
      */
-    protected function addDefaults(array $configurations)
+    protected function addDefaults(array $outlines)
     {
         return [
-            'default' => 'Base Configuration',
+            'default' => 'Base Outline',
             '_body_only' => 'Body Only',
             '_error' => 'Error',
             '_offline' => 'Offline'
-        ] + $configurations;
+        ] + $outlines;
     }
 }

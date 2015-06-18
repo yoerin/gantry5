@@ -14,10 +14,8 @@
 
 namespace Gantry\Framework;
 
-use Gantry\Framework\Base\Configurations as BaseConfigurations;
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceIterator;
-use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
+use Gantry\Framework\Base\Outlines as BaseOutlines;
 
-class Configurations extends BaseConfigurations
+class Outlines extends BaseOutlines
 {
 }

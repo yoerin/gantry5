@@ -24,9 +24,9 @@ class Assignments extends HtmlController
 {
     public function index()
     {
-        $configuration = isset($this->params['configuration']) ? $this->params['configuration'] : null;
-        if ($configuration !== 'default') {
-            $assignments = new AssignmentsObject($configuration);
+        $outline = isset($this->params['outline']) ? $this->params['outline'] : null;
+        if ($outline !== 'default') {
+            $assignments = new AssignmentsObject($outline);
 
             $this->params['assignments'] = $assignments->get();
         }
@@ -36,12 +36,12 @@ class Assignments extends HtmlController
 
     public function store()
     {
-        $configuration = isset($this->params['configuration']) ? $this->params['configuration'] : null;
-        if ($configuration === 'default') {
+        $outline = isset($this->params['outline']) ? $this->params['outline'] : null;
+        if ($outline === 'default') {
             $this->undefined();
         }
 
-        $assignments = new AssignmentsObject($configuration);
+        $assignments = new AssignmentsObject($outline);
         $assignments->set($this->request->post->getArray());
 
         // Fire save event.

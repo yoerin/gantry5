@@ -13,7 +13,6 @@ namespace Gantry\Admin;
 
 use Gantry\Component\Layout\Layout;
 use Gantry\Framework\Base\Gantry;
-use Gantry\Framework\Configurations;
 use Gantry\Joomla\Manifest;
 use RocketTheme\Toolbox\Event\Event;
 use RocketTheme\Toolbox\Event\EventSubscriberInterface;
@@ -45,7 +44,7 @@ class EventListener implements EventSubscriberInterface
 
     public function onLayoutSave(Event $event)
     {
-        $positions = $event->gantry['configurations']->positions();
+        $positions = $event->gantry['outlines']->positions();
 
         $manifest = new Manifest($event->gantry['theme.name']);
         $manifest->setPositions(array_keys($positions));

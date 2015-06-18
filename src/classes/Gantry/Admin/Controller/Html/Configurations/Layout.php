@@ -82,7 +82,7 @@ class Layout extends HtmlController
 
     public function index()
     {
-        $id = $this->params['configuration'];
+        $id = $this->params['outline'];
         $layout = $this->getLayout($id);
         if (!$layout) {
             throw new \RuntimeException('Layout not found', 404);
@@ -131,12 +131,12 @@ class Layout extends HtmlController
             throw new \RuntimeException('Error while saving layout: Structure missing', 400);
         }
 
-        $configuration = $this->params['configuration'];
+        $outline = $this->params['outline'];
         $preset = $this->request->post->getJsonArray('preset');
 
         // Create layout from the data.
         $layout = new LayoutObject(
-            $configuration,
+            $outline,
             LayoutReader::data(['preset' => $preset, 'children' => $layout])
         );
 
@@ -154,7 +154,7 @@ class Layout extends HtmlController
 
     public function particle($type, $id)
     {
-        $page = $this->params['configuration'];
+        $page = $this->params['outline'];
         $layout = $this->getLayout($page);
         if (!$layout) {
             throw new \RuntimeException('Layout not found', 404);

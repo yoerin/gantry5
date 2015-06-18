@@ -14,7 +14,7 @@
 
 namespace Gantry\Framework\Base;
 
-use Gantry\Framework\Configurations;
+use Gantry\Framework\Outlines;
 use Gantry\Framework\Platform;
 use Gantry\Framework\Request;
 use Gantry\Framework\Services\ConfigServiceProvider;
@@ -142,13 +142,19 @@ class Gantry extends Container
         };
 
         // Make sure that nobody modifies the original collection by making it a factory.
-        $instance['configurations'] = $instance->factory(function ($c) {
+        $instance['outlines'] = $instance->factory(function ($c) {
             static $collection;
             if (!$collection) {
-                $collection = (new Configurations($c))->load();
+                $collection = (new Outlines($c))->load();
             }
 
             return $collection->copy();
+        });
+
+        // TODO: Deprecated in RC4: remove in the next version.
+        $instance['configurations'] = $instance->factory(function ($c) {
+            trigger_error("\$gantry['configurations'] has been deprecated, use \$gantry['outlines'] instead", E_USER_DEPRECATED);
+            return $c['outlines'];
         });
 
         return $instance;

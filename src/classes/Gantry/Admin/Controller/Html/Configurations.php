@@ -19,7 +19,7 @@ use Gantry\Component\Request\Request;
 use Gantry\Component\Response\HtmlResponse;
 use Gantry\Component\Response\JsonResponse;
 use Gantry\Component\Response\Response;
-use Gantry\Framework\Configurations as ConfigurationsObject;
+use Gantry\Framework\Outlines as OutlinesObject;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
 class Configurations extends HtmlController
@@ -71,86 +71,90 @@ class Configurations extends HtmlController
 
     public function create()
     {
-        /** @var ConfigurationsObject $configurations */
-        $configurations = $this->container['configurations'];
+        /** @var OutlinesObject $outlines */
+        $outlines = $this->container['outlines'];
 
-        $configurations->create($this->request->post['title'], $this->request->post['preset']);
+        $outlines->create($this->request->post['title'], $this->request->post['preset']);
 
         return new JsonResponse(['html' => 'Configuration created.']);
     }
 
-    public function rename($configuration)
+    public function rename($outline)
     {
-        /** @var ConfigurationsObject $configurations */
-        $configurations = $this->container['configurations'];
-        $list = $configurations->user();
+        /** @var OutlinesObject $outlines */
+        $outlines = $this->container['outlines'];
+        $list = $outlines->user();
 
-        if (!isset($list[$configuration])) {
+        if (!isset($list[$outline])) {
             $this->forbidden();
         }
 
-        $configurations->rename($configuration, $this->request->post['title']);
+        $outlines->rename($outline, $this->request->post['title']);
 
         return new JsonResponse(['html' => 'Configuration renamed.']);
     }
 
-    public function duplicate($configuration)
+    public function duplicate($outline)
     {
-        /** @var ConfigurationsObject $configurations */
-        $configurations = $this->container['configurations'];
+        /** @var OutlinesObject $outlines */
+        $outlines = $this->container['outlines'];
 
         // Handle special case on duplicating a preset.
-        if ($configuration && $configuration[0] == '_') {
-            $preset = $configurations->preset($configuration);
+        if ($outline && $outline[0] == '_') {
+            $preset = $outlines->preset($outline);
             if (empty($preset)) {
                 throw new \RuntimeException('Preset not found');
             }
-            $configurations->create(ucwords(trim(str_replace('_', ' ', $configuration))), $configuration);
+            $outlines->create(ucwords(trim(str_replace('_', ' ', $outline))), $outline);
 
             return new JsonResponse(['html' => 'System configuration duplicated.']);
         }
 
-        $list = $configurations->user();
+        $list = $outlines->user();
 
-        if (!isset($list[$configuration])) {
+        if (!isset($list[$outline])) {
             $this->forbidden();
         }
 
-        $configurations->duplicate($configuration);
+        $outlines->duplicate($outline);
 
         return new JsonResponse(['html' => 'Configuration duplicated.']);
     }
 
-    public function delete($configuration)
+    public function delete($outline)
     {
-        /** @var ConfigurationsObject $configurations */
-        $configurations = $this->container['configurations'];
-        $list = $configurations->user();
+        /** @var OutlinesObject $outlines */
+        $outlines = $this->container['outlines'];
+        $list = $outlines->user();
 
-        if (!isset($list[$configuration])) {
+        if (!isset($list[$outline])) {
             $this->forbidden();
         }
 
-        $configurations->delete($configuration);
+        $outlines->delete($outline);
 
-        return new JsonResponse(['html' => 'Configuration deleted.', 'outline' => $configuration]);
+        return new JsonResponse(['html' => 'Configuration deleted.', 'outline' => $outline]);
     }
 
     public function forward()
     {
         $path = func_get_args();
 
-        $configurations = $this->container['configurations']->toArray();
+        $outlines = $this->container['outlines']->toArray();
 
-        $configuration = isset($configurations[$path[0]]) ? array_shift($path) : 'default';
+        $outline = isset($outlines[$path[0]]) ? array_shift($path) : 'default';
 
-        $this->container['configuration'] = $configuration;
+        $this->container['outline'] = $outline;
+        // TODO: configuration is deprecated; remove.
+        $this->container['configuration'] = $outline;
 
         $method = $this->params['method'];
         $page = (array_shift($path) ?: 'styles');
         $resource = $this->params['location'] . '/'. $page;
 
-        $this->params['configuration'] = $configuration;
+        $this->params['outline'] = $outline;
+        // TODO: configuration is deprecated; remove.
+        $this->params['configuration'] = $outline;
         $this->params['location'] = $resource;
         $this->params['configuration_page'] = $page;
         $this->params['navbar'] = !empty($this->request->get['navbar']);

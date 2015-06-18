@@ -68,12 +68,12 @@ trait ThemeTrait
             Folder::delete($path, false);
         }
 
-        /** @var Configurations $configurations */
-        $configurations = $gantry['configurations'];
-        foreach ($configurations as $configuration => $title) {
-            $config = ConfigServiceProvider::load($gantry, $configuration);
+        /** @var Outlines $outlines */
+        $outlines = $gantry['outlines'];
+        foreach ($outlines as $outline => $title) {
+            $config = ConfigServiceProvider::load($gantry, $outline);
 
-            $compiler->reset()->setConfiguration($configuration)->setVariables($config->flatten('styles', '-'));
+            $compiler->reset()->setConfiguration($outline)->setVariables($config->flatten('styles', '-'));
             $compiler->compileAll();
         }
     }
@@ -84,19 +84,24 @@ trait ThemeTrait
      * @param string $name
      * @return $this
      */
-    public function setLayout($name = null)
+    public function setLayout($name = null, $force = false)
     {
         $gantry = static::gantry();
 
         // Set default name only if configuration has not been set before.
-        if ($name === null && !isset($gantry['configuration'])) {
+        if ($name === null && !isset($gantry['outline'])) {
             $name = 'default';
         }
 
-        $configuration = isset($gantry['configuration']) ? $gantry['configuration'] : null;
+        $outline = isset($gantry['outline']) ? $gantry['outline'] : null;
 
-        // Set configuration if given.
-        if ($name && $name != $configuration) {
+        // Set outline if given.
+        if ($name && $name != $outline) {
+            if ($force) {
+                unset($gantry['outline'], $gantry['configuration']);
+            }
+            $gantry['outline'] = $name;
+            // TODO: Configuration is deprecated, remove.
             $gantry['configuration'] = $name;
         }
 
@@ -176,7 +181,7 @@ trait ThemeTrait
             $compiler->setConfiguration($preset);
         } else {
             $gantry = static::gantry();
-            $compiler->setConfiguration(isset($gantry['configuration']) ? $gantry['configuration'] : 'default');
+            $compiler->setConfiguration(isset($gantry['outline']) ? $gantry['outline'] : 'default');
         }
 
         return $compiler->reset();
@@ -247,7 +252,7 @@ trait ThemeTrait
     {
         if (!$name) {
             try {
-                $name = static::gantry()['configuration'];
+                $name = static::gantry()['outline'];
             } catch (\Exception $e) {
                 throw new \LogicException('Gantry: Configuration has not been defined yet', 500);
             }
@@ -327,7 +332,7 @@ trait ThemeTrait
      */
     public function configuration()
     {
-        return (array) $this->details()['configuration'];
+        return (array) $this->details()['outline'];
     }
 
     /**

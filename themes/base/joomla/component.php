@@ -18,10 +18,7 @@ $theme = $gantry['theme'];
 
 $raw = JFactory::getApplication()->input->getString('type') == 'raw';
 
-// Reset used outline configuration.
-unset($gantry['configuration']);
-
 // Render the component.
 echo $theme
-    ->setLayout('_body_only')
+    ->setLayout('_body_only', true)
     ->render($raw ? 'raw.html.twig' : 'component.html.twig');

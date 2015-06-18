@@ -15,12 +15,12 @@ use Gantry\Prime\Pages;
 
 class Assignments
 {
-    protected $configuration_id;
+    protected $outline;
     protected $pages;
 
-    public function __construct($configuration_id)
+    public function __construct($outline)
     {
-        $this->configuration_id = $configuration_id;
+        $this->outline = $outline;
     }
 
     public function get()

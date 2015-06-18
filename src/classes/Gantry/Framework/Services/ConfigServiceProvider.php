@@ -31,14 +31,14 @@ class ConfigServiceProvider implements ServiceProviderInterface
 
         $gantry['config'] = function($c) {
             // Make sure configuration has been set.
-            if (!isset($c['configuration'])) {
+            if (!isset($c['outline'])) {
                 throw new \LogicException('Gantry: Please set current configuration before using $gantry["config"]', 500);
             }
 
             // Get the current configuration and lock the value from modification.
-            $configuration = $c->lock('configuration');
+            $outline = $c->lock('outline');
 
-            return static::load($c, $configuration);
+            return static::load($c, $outline);
         };
     }
 

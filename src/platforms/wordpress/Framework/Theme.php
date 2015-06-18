@@ -73,7 +73,7 @@ class Theme extends Base\Theme
     {
         $gantry = Gantry::instance();
 
-        $positions = $gantry['configurations']->positions();
+        $positions = $gantry['outlines']->positions();
 
         foreach ( $positions as $name => $title ) {
             // FIXME

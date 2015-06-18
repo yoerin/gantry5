@@ -11,7 +11,7 @@
             </option>
         </optgroup>
 
-        {% set user_conf = gantry.configurations.user %}
+        {% set user_conf = gantry.outlines.user %}
         {% if user_conf.count %}
         <optgroup label="Theme Outlines">
             {% for name, title in user_conf %}
@@ -28,7 +28,7 @@
         </optgroup>
         {% endif %}
 
-        {% set system_conf = gantry.configurations.system %}
+        {% set system_conf = gantry.outlines.system %}
         {% if system_conf.count %}
         <optgroup label="System Outlines">
             {% for name, title in system_conf %}

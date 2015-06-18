@@ -49,7 +49,7 @@ abstract class CssCompiler implements CssCompilerInterface
     /**
      * @var string
      */
-    protected $configuration = 'default';
+    protected $outline = 'default';
 
     /**
      * @var array
@@ -83,13 +83,13 @@ abstract class CssCompiler implements CssCompilerInterface
     }
 
     /**
-     * @param string $configuration
+     * @param string $outline
      * @return $this
      */
-    public function setConfiguration($configuration = null)
+    public function setConfiguration($outline = null)
     {
-        if ($configuration !== null) {
-            $this->configuration = $configuration;
+        if ($outline !== null) {
+            $this->outline = $outline;
         }
 
         return $this;
@@ -154,7 +154,7 @@ abstract class CssCompiler implements CssCompilerInterface
      */
     public function getCssUrl($name)
     {
-        $out = $name . ($this->configuration !== 'default' ? '_'. $this->configuration : '');
+        $out = $name . ($this->outline !== 'default' ? '_'. $this->outline : '');
 
         return "{$this->target}/{$out}.css";
     }

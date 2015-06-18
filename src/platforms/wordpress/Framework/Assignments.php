@@ -22,11 +22,11 @@ use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
 class Assignments
 {
-    protected $configuration;
+    protected $outline;
 
-    public function __construct($configuration)
+    public function __construct($outline)
     {
-        $this->configuration = $configuration;
+        $this->outline = $outline;
     }
 
     public function get()
@@ -70,7 +70,7 @@ class Assignments
         $locator = $gantry['locator'];
 
         // Save layout into custom directory for the current theme.
-        $save_dir = $locator->findResource("gantry-config://{$this->configuration}", true, true);
+        $save_dir = $locator->findResource("gantry-config://{$this->outline}", true, true);
         $filename = "{$save_dir}/assignments.yaml";
 
         $file = YamlFile::instance($filename);

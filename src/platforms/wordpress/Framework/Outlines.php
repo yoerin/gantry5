@@ -13,12 +13,12 @@ namespace Gantry\Framework;
 
 use Gantry\Admin\ThemeList;
 use Gantry\Component\Filesystem\Folder;
-use Gantry\Framework\Base\Configurations as BaseConfigurations;
+use Gantry\Framework\Base\Outlines as BaseOutlines;
 use Gantry\Joomla\StyleHelper;
 use Gantry\Joomla\TemplateInstaller;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
-class Configurations extends BaseConfigurations
+class Outlines extends BaseOutlines
 {
     public function create($title = 'Untitled', $preset = 'default')
     {

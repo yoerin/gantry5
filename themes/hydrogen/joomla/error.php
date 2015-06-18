@@ -23,10 +23,7 @@ $context = array(
     'backtrace' => $this->debug ? $this->renderBacktrace() : null
 );
 
-// Reset used outline configuration.
-unset($gantry['configuration']);
-
 // Render the page.
 echo $theme
-    ->setLayout('_error')
+    ->setLayout('_error', true)
     ->render('error.html.twig', $context);

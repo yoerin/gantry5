@@ -60,9 +60,9 @@ class Settings extends HtmlController
 
     public function index()
     {
-        $configuration = $this->params['configuration'];
+        $outline = $this->params['outline'];
 
-        if($configuration == 'default') {
+        if($outline == 'default') {
             $this->params['overrideable'] = false;
         } else {
             $this->params['defaults'] = $this->container['defaults'];
@@ -70,22 +70,20 @@ class Settings extends HtmlController
         }
 
         $this->params['particles'] = $this->container['particles']->group();
-        $this->params['route']  = "configurations.{$this->params['configuration']}.settings";
-        $this->params['page_id'] = $configuration;
-
-        //$this->params['layout'] = LayoutObject::instance($configuration);
+        $this->params['route']  = "configurations.{$this->params['outline']}.settings";
+        $this->params['page_id'] = $outline;
 
         return $this->container['admin.theme']->render('@gantry-admin/pages/configurations/settings/settings.html.twig', $this->params);
     }
 
     public function display($id)
     {
-        $configuration = $this->params['configuration'];
+        $outline = $this->params['outline'];
         $particle = $this->container['particles']->get($id);
         $blueprints = new BlueprintsForm($particle);
         $prefix = 'particles.' . $id;
 
-        if($configuration == 'default') {
+        if($outline == 'default') {
             $this->params['overrideable'] = false;
         } else {
             $this->params['defaults'] = $this->container['defaults']->get($prefix);
@@ -96,8 +94,8 @@ class Settings extends HtmlController
             'particle' => $blueprints,
             'data' =>  Gantry::instance()['config']->get($prefix),
             'id' => $id,
-            'parent' => "configurations/{$this->params['configuration']}/settings",
-            'route'  => "configurations.{$this->params['configuration']}.settings.{$prefix}",
+            'parent' => "configurations/{$this->params['outline']}/settings",
+            'route'  => "configurations.{$this->params['outline']}.settings.{$prefix}",
             'skip' => ['enabled']
             ];
 
@@ -142,15 +140,15 @@ class Settings extends HtmlController
 
         array_pop($path);
 
-        $configuration = "configurations/{$this->params['configuration']}";
+        $outline = "configurations/{$this->params['outline']}";
         $this->params = [
-                'configuration' => $configuration,
+                'configuration' => $outline,
                 'blueprints' => $fields,
                 'data' => $data,
                 'prefix' => $prefix,
                 'parent' => $path
-                    ? "$configuration/settings/particles/{$id}/" . implode('/', $path)
-                    : "$configuration/settings/particles/{$id}",
+                    ? "{$outline}/settings/particles/{$id}/" . implode('/', $path)
+                    : "{$outline}/settings/particles/{$id}",
                 'route' => 'settings.' . $offset
             ] + $this->params;
 
@@ -216,8 +214,8 @@ class Settings extends HtmlController
         $locator = $this->container['locator'];
 
         // Save layout into custom directory for the current theme.
-        $configuration = $this->params['configuration'];
-        $save_dir = $locator->findResource("gantry-config://{$configuration}/particles", true, true);
+        $outline = $this->params['outline'];
+        $save_dir = $locator->findResource("gantry-config://{$outline}/particles", true, true);
         $filename = "{$save_dir}/{$id}.yaml";
 
         $file = YamlFile::instance($filename);

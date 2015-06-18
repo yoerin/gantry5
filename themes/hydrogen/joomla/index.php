@@ -16,10 +16,10 @@ $gantry = include __DIR__ . '/includes/gantry.php';
 /** @var \Gantry\Framework\Theme $theme */
 $theme = $gantry['theme'];
 
-/** @var \Gantry\Framework\Configurations $configurations */
-$configurations = $gantry['configurations'];
+/** @var \Gantry\Framework\Outlines $outlines */
+$outlines = $gantry['outlines'];
 
 // Render the page.
 echo $theme
-    ->setLayout($configurations->current())
+    ->setLayout($outlines->current())
     ->render('index.html.twig');
