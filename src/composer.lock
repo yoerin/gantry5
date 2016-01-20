@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "10731d66d2fd65d2a772bd21b02f2df0",
-    "content-hash": "f4841033cf60c83e9ca3616ee7f53066",
+    "hash": "c23a31ccb1ad496c4e585b8aa51074c0",
+    "content-hash": "7dad60f49f0074099e092375027b8c48",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -233,34 +233,31 @@
         },
         {
             "name": "leafo/scssphp",
-            "version": "v0.3.0",
+            "version": "v0.6.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/scssphp.git",
-                "reference": "4bcaed23664897db093a50e99b93e078f3a31a2d"
+                "reference": "a27edad3d16635a222d7204706572e24c338aa17"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/scssphp/zipball/4bcaed23664897db093a50e99b93e078f3a31a2d",
-                "reference": "4bcaed23664897db093a50e99b93e078f3a31a2d",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/a27edad3d16635a222d7204706572e24c338aa17",
+                "reference": "a27edad3d16635a222d7204706572e24c338aa17",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
                 "kherge/box": "~2.5",
                 "phpunit/phpunit": "~3.7",
-                "squizlabs/php_codesniffer": "~2.3"
+                "squizlabs/php_codesniffer": "~2.5"
             },
             "bin": [
                 "bin/pscss"
             ],
             "type": "library",
             "autoload": {
-                "classmap": [
-                    "classmap.php"
-                ],
                 "psr-4": {
                     "Leafo\\ScssPhp\\": "src/"
                 }
@@ -285,7 +282,7 @@
                 "scss",
                 "stylesheet"
             ],
-            "time": "2015-09-07 01:04:49"
+            "time": "2016-01-15 02:50:06"
         },
         {
             "name": "pimple/pimple",

@@ -29,6 +29,8 @@ class Compiler extends BaseCompiler
 
     public function __construct()
     {
+        parent::__construct();
+
         $this->registerFunction('get-font-url', [$this, 'userGetFontUrl']);
         $this->registerFunction('get-font-family', [$this, 'userGetFontFamily']);
         $this->registerFunction('get-local-fonts', [$this, 'userGetLocalFonts']);
@@ -72,7 +74,7 @@ class Compiler extends BaseCompiler
      *
      * @return mixed
      */
-    public function get($name, $shouldThrow = true, $env = null)
+    public function get($name, $shouldThrow = true, BaseCompiler\Environment $env = null)
     {
         try {
             return parent::get($name, $shouldThrow, $env);
@@ -82,7 +84,12 @@ class Compiler extends BaseCompiler
         }
     }
 
-    public function libUrl(array $args, Compiler $compiler)
+    /**
+     * @param array $args
+     * @return string
+     * @throws \Leafo\ScssPhp\Exception\CompilerException
+     */
+    public function libUrl(array $args)
     {
         // Function has a single parameter.
         $parsed = reset($args);
@@ -112,10 +119,9 @@ class Compiler extends BaseCompiler
      * get-font-url($my-font-variable);
      *
      * @param array $args
-     * @param Compiler $compiler
      * @return string
      */
-    public function userGetFontUrl($args, Compiler $compiler)
+    public function userGetFontUrl($args)
     {
         $value = trim($this->compileValue(reset($args)), '\'"');
 
@@ -138,10 +144,9 @@ class Compiler extends BaseCompiler
      * font-family: get-font-family($my-font-variable);
      *
      * @param array $args
-     * @param Compiler $compiler
      * @return string
      */
-    public function userGetFontFamily($args, Compiler $compiler)
+    public function userGetFontFamily($args)
     {
         $value = trim($this->compileValue(reset($args)), '\'"');
 
@@ -152,10 +157,9 @@ class Compiler extends BaseCompiler
      * get-local-fonts($my-font-variable, $my-font-variable2, ...);
      *
      * @param array $args
-     * @param Compiler $compiler
      * @return string
      */
-    public function userGetLocalFonts($args, Compiler $compiler)
+    public function userGetLocalFonts($args)
     {
         $args = $this->compileArgs($args);
 
@@ -180,10 +184,9 @@ class Compiler extends BaseCompiler
      * get-local-font-weights(roboto);
      *
      * @param array $args
-     * @param Compiler $compiler
      * @return string
      */
-    public function userGetLocalFontWeights($args, Compiler $compiler)
+    public function userGetLocalFontWeights($args)
     {
         $name = trim($this->compileValue(reset($args)), '\'"');
 
@@ -192,7 +195,7 @@ class Compiler extends BaseCompiler
         // Create a list of numbers so that SCSS parser can parse the list.
         $list = [];
         foreach ($weights as $weight) {
-            $list[] = ['number', $weight, ''];
+            $list[] = ['string', '', [$weight]];
         }
 
         return ['list', ',', $list];
@@ -205,7 +208,7 @@ class Compiler extends BaseCompiler
      * @param Compiler $compiler
      * @return string
      */
-    public function userGetLocalFontUrl($args, Compiler $compiler)
+    public function userGetLocalFontUrl($args)
     {
         $args = $this->compileArgs($args);
 
@@ -315,8 +318,10 @@ class Compiler extends BaseCompiler
             $filename = $locator($path);
 
             $file = ScssFile::instance($filename);
-            $this->importCache[$path] = $file->content();
+            $code = $file->content();
             $file->free();
+
+            $this->importCache[$path] = $code;
         }
 
         if (!isset($this->parsedFiles[$path])) {
@@ -334,7 +339,7 @@ class Compiler extends BaseCompiler
 
         $dirname = dirname($path);
         array_unshift($this->importPaths, $dirname);
-        $this->compileChildren($tree->children, $out);
+        $this->compileChildrenNoReturn($tree->children, $out);
         array_shift($this->importPaths);
     }
 }
