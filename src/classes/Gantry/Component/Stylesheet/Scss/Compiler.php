@@ -70,7 +70,7 @@ class Compiler extends BaseCompiler
      *
      * @param string    $name
      * @param boolean   $shouldThrow
-     * @param \stdClass $env
+     * @param BaseCompiler\Environment $env
      *
      * @return mixed
      */
@@ -205,7 +205,6 @@ class Compiler extends BaseCompiler
      * get-local-font-url(roboto, 400);
      *
      * @param array $args
-     * @param Compiler $compiler
      * @return string
      */
     public function userGetLocalFontUrl($args)
