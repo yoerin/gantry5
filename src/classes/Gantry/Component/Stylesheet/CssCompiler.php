@@ -264,7 +264,7 @@ abstract class CssCompiler implements CssCompilerInterface
         // Check if any of the imported files have been changed.
         $imports = isset($content['imports']) ? $content['imports'] : [];
         foreach ($imports as $resource => $timestamp) {
-            $import = $locator->findResource($resource);
+            $import = $locator->isStream($resource) ? $locator->findResource($resource) : realpath($resource);
             if (!$import || filemtime($import) != $timestamp) {
                 return true;
             }
