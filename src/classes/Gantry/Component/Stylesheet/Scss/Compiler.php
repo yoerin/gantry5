@@ -26,6 +26,7 @@ class Compiler extends BaseCompiler
     protected $fonts;
     protected $usedFonts;
     protected $streamNames;
+    protected $parsedFiles = [];
 
     public function __construct()
     {
@@ -311,6 +312,32 @@ class Compiler extends BaseCompiler
         $this->streamNames[] = $path;
         $this->addParsedFile($path);
         return $parser;
+    }
+
+    /**
+     * Adds to list of parsed files
+     *
+     * @api
+     *
+     * @param string $path
+     */
+    public function addParsedFile($path)
+    {
+        if ($path && file_exists($path)) {
+            $this->parsedFiles[$path] = filemtime($path);
+        }
+    }
+
+    /**
+     * Returns list of parsed files
+     *
+     * @api
+     *
+     * @return array
+     */
+    public function getParsedFiles()
+    {
+        return $this->parsedFiles;
     }
 
     /**

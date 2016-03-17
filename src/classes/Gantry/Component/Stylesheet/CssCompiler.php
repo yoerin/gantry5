@@ -63,6 +63,11 @@ abstract class CssCompiler implements CssCompilerInterface
     protected $files;
 
     /**
+     * @var mixed
+     */
+    protected $compiler;
+
+    /**
      * @var bool
      */
     protected $production;
