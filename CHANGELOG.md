@@ -1,3 +1,78 @@
+# 5.2.14
+## XX/XX/2016
+
+1. [Common](#common)
+    1. [](#bugfix)
+        - Fixed alignment of menu items with children, taking up a bit more space than leaves (#1183)
+
+# 5.2.13
+## 16/03/2016
+
+1. [Common](#common)
+    1. [](#new)
+        - Implemented an universal method `gantry.load()` to include common JS frameworks from Twig on all platforms (#1132)
+    2. [](#improved)
+        - The `dropdown-offset-x()` mixin now includes a 3rd option that allows to disable or customize the offsets for the first level dropdown child (fixes #1182, thanks @JoomFX)
+        - Add possibility to target all particles with a single CSS rule `div.g-particle` (#909)
+    3. [](#bugfix)
+        - Fixed menu item height difference between regular and parent menu items (#1183)
+        - Remove unnecessary error: `Theme does not have Base Outline` (#1107)
+2. [Joomla](#joomla)
+    2. [](#improved)
+        - Load template language overrides from `custom/language`
+    3. [](#bugfix)
+        - Fixed error on saving system outline layouts (#1167)
+3. [WordPress](#wordpress)
+    1. [](#new)
+        - Allow Gantry theme upgrades from WordPress theme uploader (#1165)
+    2. [](#improved)
+        - Removed hardcoded `h2` tag from Login Form particle title. You can still place your `HTML` code inside of the input field.
+    3. [](#bugfix)
+        - Fixed Hydrogen Child theme to reference properly `g5_hydrogen` parent directory
+        - Fixed Gantry 5 Clear Cache fires during every plugin installation/update (#996)
+        - Fixed child comment reply input position in Hydrogen
+        - Fixed `Undefined $_GLOBALS` on the WP login page when the Offline Mode is enabled
+
+# 5.2.12
+## 27/02/2016
+
+1. [Common](#common)
+    1. [](#new)
+        - Add support for toggling offcanvas visibility on non-mobile devices
+    3. [](#bugfix)
+        - Fixed a regression and removed `very-large-desktop-range` from `breakpoint` mixin
+2. [Joomla](#joomla)
+    3. [](#bugfix)
+        - Remove "always render component" workaround introduced in 5.2.8 (fixes #1157, thanks @JoomFx and @nonumber)
+
+# 5.2.11
+## 23/02/2016
+
+1. [Common](#common)
+    1. [](#new)
+        - Added `very-large-desktop-range` to `breakpoint` mixin in order to be used when working with screen resolutions of 1920px+
+        - Added option to parse Twig in Custom HTML particle (#1144)
+    2. [](#improved)
+        - Collection Lists now have a maximum height set, triggering a scrollbar in case the amount of items is big (#1139)
+    3. [](#bugfix)
+        - [CHANGE]: The `dependencies.scss` file does not import `nucleus/theme/base` anymore. **IMPORTANT**: if you are a theme developer, make sure you adjust your dependencies file and include the theme base at the top of your theme.scss (#1152)
+        - System outlines should not be able to assign to pages (Fixes #1146)
+        - Fixed frontend rendering if page settings have never been saved
+        - Fixed tooltips in IE Edge and in some circumstances on Firefox (#1154)
+        - Fixed `404 Not Found` when creating new outline
+2. [Joomla](#joomla)
+    3. [](#bugfix)
+        - Admin: Fix potential fatal error when saving Outline Assignments
+        - Update Joomla template style when saving layout
+3. [WordPress](#wordpress)
+    1. [](#new)
+        - Fixed Child Theme support in Hydrogen (requires update of Hydrogen theme) (#1149)
+        - Added sample Hydrogen Child theme to git (#1149)
+    2. [](#improved)
+        - Add Ability to Duplicate Base in Outlines (#846)
+    3. [](#bugfix)
+        - Fixed typo in `posts_per_page` custom WordPress field (thanks @adi8i - #1153)
+
 # 5.2.10
 ## 08/02/2016
 

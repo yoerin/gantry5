@@ -32,7 +32,7 @@ configuration:
   theme:
     parent: hydrogen
     base: gantry-theme://common
-    file: gantry-theme://include/theme.php
+    file: gantry-theme://includes/theme.php
     class: \Gantry\Framework\Theme
     textdomain: g5_hydrogen
 

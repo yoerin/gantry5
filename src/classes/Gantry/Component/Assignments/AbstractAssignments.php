@@ -94,23 +94,27 @@ abstract class AbstractAssignments
     /**
      * List matching outlines sorted by score.
      *
+     * @param array $candidates
      * @return array
      */
-    public function scores()
+    public function scores(array $candidates = null)
     {
         $this->init();
-        return $this->filter->scores($this->candidates, $this->page);
+        $candidates = $candidates ?: $this->candidates;
+        return $this->filter->scores($candidates, $this->page);
     }
 
     /**
      * List matching outlines with matched assignments.
      *
+     * @param array $candidates
      * @return array
      */
-    public function matches()
+    public function matches(array $candidates = null)
     {
         $this->init();
-        return $this->filter->matches($this->candidates, $this->page);
+        $candidates = $candidates ?: $this->candidates;
+        return $this->filter->matches($candidates, $this->page);
     }
 
     /**
@@ -128,6 +132,13 @@ abstract class AbstractAssignments
         // Find all the assignment files.
         $paths = $locator->findResources("gantry-config://");
         $files = (new ConfigFileFinder)->locateFileInFolder('assignments', $paths);
+
+        // Make sure that base or system outlines aren't in the list.
+        foreach ($files as $key => $array) {
+            if ($key && (((string)$key[0]) === '_' || $key === 'default')) {
+                unset($files[$key]);
+            }
+        }
 
         $cache = $locator->findResource('gantry-cache://theme/compiled/config', true, true);
 

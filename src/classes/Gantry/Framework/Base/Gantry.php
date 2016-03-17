@@ -42,7 +42,7 @@ abstract class Gantry extends Container
     public static function instance()
     {
         if (!self::$instance) {
-            self::$instance = static::load();
+            self::$instance = static::init();
 
             if (!defined('GANTRY5_DEBUG')) {
                 define('GANTRY5_DEBUG', self::$instance->debug());
@@ -107,6 +107,17 @@ abstract class Gantry extends Container
     }
 
     /**
+     * Load Javascript framework / extension in platform independent way.
+     *
+     * @param string $framework
+     * @return bool
+     */
+    public function load($framework)
+    {
+        return RealDocument::load($framework);
+    }
+
+    /**
      * Lock the variable against modification and return the value.
      *
      * @param string $id
@@ -167,7 +178,7 @@ abstract class Gantry extends Container
         return $this->wrapper;
     }
 
-    protected static function load()
+    protected static function init()
     {
         /** @var Gantry $instance */
         $instance = new static();
@@ -175,11 +186,11 @@ abstract class Gantry extends Container
         $instance->register(new ConfigServiceProvider);
         $instance->register(new StreamsServiceProvider);
 
-        $instance['request'] = function ($c) {
+        $instance['request'] = function () {
             return new Request;
         };
 
-        $instance['events'] = function ($c) {
+        $instance['events'] = function () {
             return new EventDispatcher;
         };
 
@@ -187,20 +198,20 @@ abstract class Gantry extends Container
             return new Platform($c);
         };
 
-        $instance['translator'] = function ($c) {
+        $instance['translator'] = function () {
             return new Translator;
         };
 
-        $instance['site'] = function ($c) {
+        $instance['site'] = function () {
             return new Site;
         };
 
-        $instance['menu'] = function ($c) {
+        $instance['menu'] = function () {
             return new Menu;
         };
 
-        $instance['messages'] = function ($c) {
-            return new Messages();
+        $instance['messages'] = function () {
+            return new Messages;
         };
 
         $instance['page'] = function ($c) {
