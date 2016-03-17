@@ -24,7 +24,6 @@ class Compiler extends BaseCompiler
     protected $basePath;
     protected $fonts;
     protected $usedFonts;
-    protected $parsedFiles;
 
     public function __construct()
     {
@@ -40,12 +39,6 @@ class Compiler extends BaseCompiler
     public function setBasePath($basePath)
     {
         $this->basePath = '/' . Folder::getRelativePath($basePath);
-    }
-
-    public function getParsedFiles()
-    {
-        // parsedFiles is a private variable in base class, so we need to override function to see it.
-        return $this->parsedFiles;
     }
 
     public function setFonts(array $fonts)
@@ -301,39 +294,28 @@ class Compiler extends BaseCompiler
     /**
      * Override function to improve the logic.
      *
-     * @param $path
-     * @param $out
+     * @param string $path
+     * @param array  $out
      */
     protected function importFile($path, $out)
     {
+        /** @var UniformResourceLocator $locator */
+        $locator = Gantry::instance()['locator'];
+
         // see if tree is cached
-        if (!isset($this->importCache[$path])) {
-            $gantry = Gantry::instance();
+        $realPath = $locator($path);
 
-            /** @var UniformResourceLocator $locator */
-            $locator = $gantry['locator'];
+        if (isset($this->importCache[$realPath])) {
+            $this->handleImportLoop($realPath);
 
-            $filename = $locator($path);
+            $tree = $this->importCache[$realPath];
+        } else {
+            $code   = file_get_contents($realPath);
+            $parser = $this->parserFactory($path);
+            $tree   = $parser->parse($code);
 
-            $file = ScssFile::instance($filename);
-            $code = $file->content();
-            $file->free();
-
-            $this->importCache[$path] = $code;
+            $this->importCache[$realPath] = $tree;
         }
-
-        if (!isset($this->parsedFiles[$path])) {
-            $gantry = Gantry::instance();
-
-            /** @var UniformResourceLocator $locator */
-            $locator = $gantry['locator'];
-
-            $filename = $locator($path);
-
-            $this->parsedFiles[$path] = filemtime($filename);
-        }
-
-        $tree = $this->importCache[$path];
 
         $dirname = dirname($path);
         array_unshift($this->importPaths, $dirname);

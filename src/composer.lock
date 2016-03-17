@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "a908551b24cfc7b4bbdfe774006b9e10",
-    "content-hash": "c94e70f7a7139c737fc994e1d2ef2d20",
+    "hash": "3f3406c3c67218ad781a26d26133d8e3",
+    "content-hash": "05c2f88afab426d44a984a6e04e98855",
     "packages": [
         {
             "name": "erusev/parsedown",
@@ -191,16 +191,16 @@
         },
         {
             "name": "leafo/scssphp",
-            "version": "v0.6.3",
+            "version": "dev-master",
             "source": {
                 "type": "git",
                 "url": "https://github.com/leafo/scssphp.git",
-                "reference": "a27edad3d16635a222d7204706572e24c338aa17"
+                "reference": "c4ad181885e5f85a9f71002983597d9da2c11a8c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/leafo/scssphp/zipball/a27edad3d16635a222d7204706572e24c338aa17",
-                "reference": "a27edad3d16635a222d7204706572e24c338aa17",
+                "url": "https://api.github.com/repos/leafo/scssphp/zipball/c4ad181885e5f85a9f71002983597d9da2c11a8c",
+                "reference": "c4ad181885e5f85a9f71002983597d9da2c11a8c",
                 "shasum": ""
             },
             "require": {
@@ -240,7 +240,7 @@
                 "scss",
                 "stylesheet"
             ],
-            "time": "2016-01-15 02:50:06"
+            "time": "2016-02-24 15:41:07"
         },
         {
             "name": "pimple/pimple",
@@ -511,7 +511,8 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
-        "filp/whoops": 20
+        "filp/whoops": 20,
+        "leafo/scssphp": 20
     },
     "prefer-stable": false,
     "prefer-lowest": false,
