@@ -17,6 +17,7 @@ use Gantry\Component\Filesystem\Folder;
 use Gantry\Framework\Base\Document;
 use Gantry\Framework\Gantry;
 use Leafo\ScssPhp\Compiler as BaseCompiler;
+use Leafo\ScssPhp\Parser;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
 class Compiler extends BaseCompiler
@@ -24,6 +25,7 @@ class Compiler extends BaseCompiler
     protected $basePath;
     protected $fonts;
     protected $usedFonts;
+    protected $streamNames;
 
     public function __construct()
     {
@@ -289,6 +291,45 @@ class Compiler extends BaseCompiler
         $this->usedFonts = [];
 
         return $this;
+    }
+
+    /**
+     * Instantiate parser
+     *
+     * @param string $path
+     *
+     * @return \Leafo\ScssPhp\Parser
+     */
+    protected function parserFactory($path)
+    {
+        $parser = new Parser($path, count($this->sourceNames), $this->encoding);
+
+        /** @var UniformResourceLocator $locator */
+        $locator = Gantry::instance()['locator'];
+
+        $this->sourceNames[] = $locator->isStream($path) ? $locator->findResource($path, false) : $path;
+        $this->streamNames[] = $path;
+        $this->addParsedFile($path);
+        return $parser;
+    }
+
+    /**
+     * Handle import loop
+     *
+     * @param string $name
+     *
+     * @throws \Exception
+     */
+    protected function handleImportLoop($name)
+    {
+        for ($env = $this->env; $env; $env = $env->parent) {
+            $file = $this->streamNames[$env->block->sourceIndex];
+
+            if (realpath($file) === $name) {
+                $this->throwError('An @import loop has been found: %s imports %s', $file, basename($file));
+                break;
+            }
+        }
     }
 
     /**
