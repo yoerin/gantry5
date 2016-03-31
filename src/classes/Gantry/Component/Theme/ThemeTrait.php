@@ -21,6 +21,7 @@ use Gantry\Component\Layout\Layout;
 use Gantry\Component\Stylesheet\CssCompilerInterface;
 use Gantry\Component\Theme\ThemeDetails;
 use Gantry\Framework\Services\ConfigServiceProvider;
+use RocketTheme\Toolbox\File\PhpFile;
 use RocketTheme\Toolbox\ResourceLocator\UniformResourceLocator;
 
 /**
@@ -562,9 +563,41 @@ trait ThemeTrait
      */
     protected function renderContent($item)
     {
-        $context = $this->getContext(['segment' => $item, 'prepare_layout' => true]);
+        $gantry = static::gantry();
 
-        $html = trim($this->render("@nucleus/content/{$item->type}.html.twig", $context));
+        $subtype = $item->subtype;
+        $enabled = $gantry['config']->get("particles.{$subtype}.enabled", 1);
+
+        if (!$enabled) {
+            return '';
+        }
+
+        $particle = $gantry['config']->getJoined("particles.{$subtype}", $item->attributes);
+        if (isset($particle['caching'])) {
+            $caching = $particle['caching'] + ['type' => 'dynamic'];
+
+            $cached = $caching['type'] === 'static';
+        }
+
+        if (isset($cached)) {
+            /** @var UniformResourceLocator $locator */
+            $locator = $gantry['locator'];
+            $key = md5(json_encode($particle));
+
+            $filename = $locator->findResource("gantry-cache://theme/html/{$key}.php", true, true);
+            $file = PhpFile::instance($filename);
+            if ($file->exists()) {
+                $html = $file->content()['html'];
+            }
+        }
+        if (!isset($html)) {
+            $context = $this->getContext(['segment' => $item, 'enabled' => 1, 'particle' => $particle, 'prepare_layout' => true]);
+            $html = trim($this->render("@nucleus/content/{$item->type}.html.twig", $context));
+
+            if (isset($file)) {
+                $file->save(['html' => $html]);
+            }
+        }
 
         return !strstr($html, '@@DEFERRED@@') ? $html : null;
     }
